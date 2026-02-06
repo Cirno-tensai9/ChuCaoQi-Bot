@@ -63,7 +63,8 @@ async def _(session: CommandSession):
     notifyStr = f"开发者回复了你的工单[{order.title}]！\n"
     notifyStr += f"工单详情：{order.detail}\n" if order.detail else ""
     notifyStr += f"回复内容：{reply}"
-    await nonebot.get_bot().send_private_msg(user_id=order.author, message=notifyStr)
+    from nb2_compat import get_bot
+    await get_bot().send_private_msg(user_id=order.author, message=notifyStr)
     await orderDB.replyWorkOrder(order, reply)
     await session.send("回复成功^ ^")
 

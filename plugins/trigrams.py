@@ -1,7 +1,6 @@
 import time
 import random
-from nonebot import scheduler
-from nb2_compat import on_command, CommandSession
+from nb2_compat import on_command, CommandSession, scheduled_job
 from plugins.chatGPT_api import getChatReply
 
 gptUseRecord = {}
@@ -64,7 +63,7 @@ async def _(session: CommandSession):
     random.seed()
 
 
-@scheduler.scheduled_job('cron', day='*', hour='0', minute='5', misfire_grace_time=None)
+@scheduled_job('cron', day='*', hour='0', minute='5', misfire_grace_time=None)
 async def dailyLLMRecordCleaner():
     global gptUseRecord
     gptUseRecord = {}

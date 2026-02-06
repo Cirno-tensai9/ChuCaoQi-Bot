@@ -9,7 +9,7 @@ from typing import Optional, Dict
 import nonebot
 import datetime
 from collections import Counter
-from nb2_compat import on_command, CommandSession, scheduled_job
+from nb2_compat import on_command, CommandSession, scheduled_job, get_bot
 from kusa_base import buying, selling, config, sendGroupMsg
 from utils import rd3, imgBytesToBase64
 import dbConnection.db as baseDB
@@ -429,7 +429,7 @@ async def GResetRunner():
         return
     allUsers = await baseDB.getAllUser()
     gValues = await gValueDB.getLatestGValues()
-    bot = nonebot.get_bot()
+    bot = get_bot()
     for user in allUsers:
         allKusaFromG = await GSellingAll(user.qq, gValues)
         if allKusaFromG:

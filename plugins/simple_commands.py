@@ -5,8 +5,7 @@ import nonebot
 import datetime
 import numpy as np
 import dbConnection.db as db
-from nonebot import Message, get_bot
-from nb2_compat import on_command, CommandSession
+from nb2_compat import on_command, CommandSession, Message, get_bot
 from kusa_base import config
 from urllib import request
 
@@ -52,7 +51,7 @@ async def sleep(ctx, msg, base, summa, size):
     if ctx['group_id'] in allow_list:
         durTime = sleepTimeCalculation(base, summa, size)
         msg += f'{durTime}sec！'
-        bot = nonebot.get_bot()
+        bot = get_bot()
         await bot.set_group_ban(group_id=ctx['group_id'], user_id=ctx['user_id'], duration=durTime)
         await bot.send_group_msg(group_id=ctx['group_id'], message=msg)
 
@@ -129,7 +128,7 @@ from nb2_compat import scheduled_job
 async def read60sRunner():
     msg = await get60sNewsPic()
     for qq_group in config['sendNews']['group']:
-        await nonebot.get_bot().send_group_msg(group_id=qq_group, message=Message(msg))
+        await get_bot().send_group_msg(group_id=qq_group, message=Message(msg))
 
 
 @on_command(name='news', only_to_me=False)

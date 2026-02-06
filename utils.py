@@ -1,10 +1,8 @@
 import re
 import httpx
 import base64
-import nonebot
 import traceback
-from nonebot import Message, CQHttpError
-from nonebot import MessageSegment as ms
+from nb2_compat import Message, MessageSegment as ms, get_bot, CQHttpError
 
 groupMemberInfoCache = {}
 
@@ -48,7 +46,7 @@ def extractImgUrls(picInfo):
 async def getUserAndGroupMsg(userId, groupId):
     userMsg = userId
     groupMsg = groupId
-    bot = nonebot.get_bot()
+    bot = get_bot()
     try:
         qqInfo = await bot.get_stranger_info(user_id=userId)
         if qqInfo:
@@ -68,7 +66,7 @@ async def getUserAndGroupMsg(userId, groupId):
 
 # 综合bot权限和被禁言者权限判断禁言能否被执行
 async def checkBanAvailable(targetId, groupId):
-    bot = nonebot.get_bot()
+    bot = get_bot()
     botBaseInfo = await bot.get_login_info()
     if botBaseInfo['user_id'] == targetId:
         return False

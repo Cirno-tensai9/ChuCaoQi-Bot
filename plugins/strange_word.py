@@ -6,7 +6,7 @@ import nonebot
 import asyncio
 from decorator import on_reply_command
 from nonebot import on_natural_language, NLPSession
-from nb2_compat import on_command, CommandSession, scheduled_job
+from nb2_compat import on_command, CommandSession, scheduled_job, on_startup
 from kusa_base import config, sendLog, isSuperAdmin
 from plugins.chatGPT_api import getChatReply
 
@@ -255,7 +255,7 @@ async def setModelSentenceListRunner():
 
 
 @on_startup
-async def _():
+async def _load_strange_word_storage():
     global sentenceListDict
     folderPath = 'database/strangeWord'
     for filename in os.listdir(folderPath):

@@ -34,7 +34,8 @@ def dice(diceNum, maxPoint):
 
 async def getBattlerName(userId, groupId):
     try:
-        bot = nonebot.get_bot()
+        from nb2_compat import get_bot
+        bot = get_bot()
         user = await baseDB.getUser(userId)
         if user and user.name:
             return user.name

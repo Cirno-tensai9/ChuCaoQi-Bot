@@ -6,9 +6,9 @@ import random
 import string
 import codecs
 import nonebot
-from nb2_compat import on_command, CommandSession
+from nb2_compat import on_command, CommandSession, get_bot
 
-bot = nonebot.get_bot()
+bot = get_bot()
 battleList = {}
 
 

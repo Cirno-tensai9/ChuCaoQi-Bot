@@ -1,4 +1,5 @@
-from nonebot.default_config import *
+# NoneBot2 uses env-based config; these are fallbacks / overrides for legacy code.
+# Do not import nonebot.default_config (NoneBot1 only).
 from datetime import timedelta
 
 COMMAND_START = {'!'}

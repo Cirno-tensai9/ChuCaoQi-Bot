@@ -7,8 +7,8 @@ import random
 import utils
 from kusa_base import config, isSuperAdmin
 from datetime import datetime
-from nb2_compat import on_command, CommandSession, scheduled_job
-from nonebot import MessageSegment as ms
+from nb2_compat import on_command, CommandSession, scheduled_job, get_bot
+from nonebot.adapters.onebot.v11 import MessageSegment as ms
 from urllib.request import urlretrieve
 
 BASE_PIC_PATH = config['basePath'] + r'\picArchive'
@@ -38,7 +38,7 @@ def getExamineFiles():
 
 @scheduled_job('cron', day='*', misfire_grace_time=500)
 async def dailyJunRunner():
-    bot = nonebot.get_bot()
+    bot = get_bot()
     now = datetime.now(pytz.timezone('Asia/Shanghai'))
     paths = archiveInfo['jun']['onlineFilePaths']
     picPath = paths[int(random.random() * len(paths))]

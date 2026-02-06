@@ -1,7 +1,7 @@
 import re
 import pytz
 import requests
-from nonebot import MessageSegment as ms
+from nonebot.adapters.onebot.v11 import MessageSegment as ms
 from kusa_base import config, sendGroupMsg
 from nb2_compat import on_command, CommandSession
 from utils import imgUrlTobase64

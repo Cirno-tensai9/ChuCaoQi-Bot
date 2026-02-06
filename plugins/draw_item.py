@@ -1,6 +1,6 @@
 import random
 import nonebot
-from nb2_compat import on_command, CommandSession
+from nb2_compat import on_command, CommandSession, get_bot
 from kusa_base import config
 from utils import nameDetailSplit
 from itertools import groupby
@@ -80,7 +80,7 @@ async def itemDraw10(session: CommandSession):
 
 
 async def ban(groupNum, userId, isRandomBan=False):
-    bot = nonebot.get_bot()
+    bot = get_bot()
     dur_time = int(1.1 ** (5 + random.random() * 70))
 
     print(f'抽奖口球-{dur_time}s, id:{userId}, group:{groupNum}')
@@ -117,7 +117,7 @@ async def getItem(groupNum, userId, strippedArg):
         msg += '(New!)'
     if item.detail:
         msg += f'\n物品说明：{item.detail}'
-    bot = nonebot.get_bot()
+    bot = get_bot()
     await bot.send_group_msg(group_id=groupNum, message=msg)
     await drawItemDB.setItemStorage(userId, item.id)
 
@@ -273,7 +273,7 @@ async def _(session: CommandSession):
     outputStr += f'\n持有数：{itemStorage.amount}' if itemStorage else ''
     outputStr += f'\n物品说明：{item.detail}' if item.detail else '\n暂无物品说明。'
     try:
-        sender_infor = await nonebot.get_bot().get_stranger_info(user_id=item.author)
+        sender_infor = await get_bot().get_stranger_info(user_id=item.author)
         outputStr += f'\n创作者：{sender_infor["nickname"]}({item.author})'
     except:
         outputStr += f'\n创作者：{item.author}'

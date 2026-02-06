@@ -1,5 +1,5 @@
-import nonebot
 import requests
+from nb2_compat import get_bot
 import typing
 from datetime import datetime
 from kusa_base import config
@@ -42,7 +42,7 @@ async def getNetworkReportRunner():
         for x in r.json()
     )
 
-    bot = nonebot.get_bot()
+    bot = get_bot()
     if latestReport is not None:
         for x in filter(lambda x: x.time > latestReport.time, d):
             await bot.send_group_msg(group_id=config['group']['sysu'], message=str(x))
@@ -63,6 +63,6 @@ async def _(session: CommandSession):
 async def vacationMentionRunner():
     if not ENV_PROD:
         return
-    bot = nonebot.get_bot()
+    bot = get_bot()
     await bot.send_group_msg(group_id=config['group']['sysu'],
                              message='给网费按个暂停键！\n寒暑假将至，可以前往 https://netpay.sysu.edu.cn/ 自助办理个人网络服务的暂停和恢复。')

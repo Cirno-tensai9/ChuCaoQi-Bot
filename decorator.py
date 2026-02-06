@@ -2,7 +2,7 @@ import time
 from functools import wraps
 from typing import Optional, List, Callable
 
-from nonebot import CommandSession, NLPSession
+from nb2_compat import CommandSession, NLPSession
 from kusa_base import sendLog
 from utils import getUserAndGroupMsg
 

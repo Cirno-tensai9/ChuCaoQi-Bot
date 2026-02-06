@@ -9,8 +9,8 @@ import nonebot
 import dbConnection.db as baseDB
 import dbConnection.kusa_field as fieldDB
 import dbConnection.kusa_item as itemDB
-from nb2_compat import on_command, CommandSession
-from nonebot import MessageSegment as ms
+from nb2_compat import on_command, CommandSession, get_bot
+from nonebot.adapters.onebot.v11 import MessageSegment as ms
 from datetime import datetime, timedelta, date, time
 from kusa_base import config, sendGroupMsg, sendPrivateMsg
 from utils import intToRomanNum

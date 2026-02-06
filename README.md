@@ -1,9 +1,9 @@
 # 除草器Bot
 
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue)](https://www.python.org/downloads/release/python-370/)
-[![NoneBot](https://img.shields.io/badge/nonebot-1.9.1-blue)](https://v1.nonebot.dev/)
+[![NoneBot](https://img.shields.io/badge/nonebot-2.x-blue)](https://github.com/nonebot/nonebot2)
 
-名为"除草器"的QQBot，采用Python编写，基于[NoneBot1](https://v1.nonebot.dev/)构建。
+名为"除草器"的QQBot，采用Python编写，基于[NoneBot2](https://github.com/nonebot/nonebot2)构建。
 
 除草器发源于中山大学东方Project交流群，现主要运营一个模拟经营类游戏（生草系统），并为SYSU/SCUT系东方相关群聊提供特色服务。
 
@@ -42,6 +42,15 @@
 4. 在`/database`路径下创建一个名为`chuchu.sqlite`的sqlite3数据库文件，用于存储除草器的数据。
 5. 使用`python bot.py`指令运行除草器（已切换到NoneBot2），Windows下可运行`startbot.bat`。
 6. 向数据库中导入`/config/initialize.sql`中的内容，用于初始化除草器的物品、商店和配置模块。
+
+### 同时运行 Discord 机器人
+
+与 QQ 共用同一数据库与生草逻辑，可在无 QQ 时使用：
+
+1. 安装依赖中已包含 `discord.py`。
+2. 设置环境变量 `DISCORD_TOKEN`（Discord 开发者后台获取）。
+3. 在项目根目录执行：`python discord_bot.py`。
+4. 在 Discord 频道中可用 `!仓库`、`!生草` 等指令（与 QQ 一致）。
 
 ## 声明
 

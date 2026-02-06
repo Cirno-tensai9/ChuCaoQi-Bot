@@ -103,7 +103,8 @@ async def sendLog(message):
 
 async def sendGroupMsg(groupId, message):
     try:
-        bot = nonebot.get_bot()
+        from nb2_compat import get_bot
+        bot = get_bot()
         await bot.send_group_msg(group_id=groupId, message=message)
         return True
     except Exception as e:
@@ -113,7 +114,8 @@ async def sendGroupMsg(groupId, message):
 
 async def sendPrivateMsg(userId, message):
     try:
-        bot = nonebot.get_bot()
+        from nb2_compat import get_bot
+        bot = get_bot()
         if str(userId) in friendList:
             await bot.send_private_msg(user_id=userId, message=message)
             return True

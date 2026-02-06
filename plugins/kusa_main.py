@@ -10,8 +10,8 @@ import dbConnection.db as baseDB
 import dbConnection.kusa_item as itemDB
 import dbConnection.kusa_field as fieldDB
 from utils import convertNumStrToInt
-from nb2_compat import on_command, CommandSession
-from nonebot import MessageSegment as ms
+from nb2_compat import on_command, CommandSession, get_bot
+from nonebot.adapters.onebot.v11 import MessageSegment as ms
 from datetime import datetime
 from kusa_base import config, isUserExist, sendPrivateMsg, sendGroupMsg
 from .kusa_statistics import getKusaAdvRank
@@ -231,13 +231,13 @@ async def kusa_ban(session: CommandSession):
             user = await baseDB.getUser(userId)
             costKusa = seconds
             if user.kusa >= costKusa:
-                await nonebot.get_bot().set_group_ban(group_id=groupNum, user_id=receiverQQ, duration=seconds)
+                await get_bot().set_group_ban(group_id=groupNum, user_id=receiverQQ, duration=seconds)
                 await baseDB.changeKusa(userId, -costKusa)
                 await baseDB.changeKusa(config['qq']['bot'], costKusa)
             else:
                 st = '你不够草^ ^'
         else:
-            await nonebot.get_bot().set_group_ban(group_id=groupNum, user_id=receiverQQ, duration=seconds)
+            await get_bot().set_group_ban(group_id=groupNum, user_id=receiverQQ, duration=seconds)
             st = '已解除相关人员的口球(如果有的话)'
     else:
         st = '参数不正确^ ^'
@@ -488,7 +488,7 @@ async def dailyReportRunner():
                      f"获得草之精华最多: {userName3}(共{maxAdvKusa['sumAdvKusa']}草精)\n" \
                      f"平均草之精华最多: {userName4}(平均{round(maxAvgAdvKusa['avgAdvKusa'], 2)}草精)\n" \
                      f"单次草之精华最多: {userName5}({maxOnceAdvKusa['maxAdvKusa']}草精)"
-    await nonebot.get_bot().send_group_msg(group_id=config['group']['main'], message=outputStr)
+    await get_bot().send_group_msg(group_id=config['group']['main'], message=outputStr)
 
 
 # 生草周报运作
@@ -499,11 +499,11 @@ async def weeklyReportRunner():
                 f"总生草次数: {row['count']}\n" \
                 f"总草产量: {round(row['sumKusa'] / 1000000)}m\n" \
                 f"总草之精华产量: {row['sumAdvKusa']}"
-    await nonebot.get_bot().send_group_msg(group_id=config['group']['main'], message=outputStr)
+    await get_bot().send_group_msg(group_id=config['group']['main'], message=outputStr)
 
 
 # 每周草精总榜
 @scheduled_job('cron', hour=4, minute=2, day_of_week='mon', misfire_grace_time=500)
 async def weeklyAdvReportRunner():
     outputStr = '总草精排行榜：' + await getKusaAdvRank()
-    await nonebot.get_bot().send_group_msg(group_id=config['group']['main'], message=outputStr)
+    await get_bot().send_group_msg(group_id=config['group']['main'], message=outputStr)

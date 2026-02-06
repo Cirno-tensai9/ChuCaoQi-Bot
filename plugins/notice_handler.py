@@ -1,8 +1,11 @@
-import nonebot
-import aiocqhttp
-from nonebot import on_websocket_connect
-from nonebot import on_request, RequestSession
-from nb2_compat import on_command, CommandSession
+from nb2_compat import (
+    on_command,
+    CommandSession,
+    on_request,
+    RequestSession,
+    on_websocket_connect,
+    get_bot,
+)
 from kusa_base import config, sendLog, isSuperAdmin, appendFriendList
 
 friendHandleTimestamp = 0
@@ -16,8 +19,9 @@ async def newMemberHandle(session: RequestSession):
         return
 
     adder_id = session.event.user_id
-    bot = nonebot.get_bot()
-    st = f"{adder_id}申请进群。加群备注为：\n" + session.event.comment
+    bot = session.bot
+    comment = session.event.comment or ""
+    st = f"{adder_id}申请进群。加群备注为：\n" + comment
     await bot.send_group_msg(group_id=groupNum, message=st)
     await sendLog(f'群聊{groupNum}:' + st)
 
@@ -27,7 +31,7 @@ async def newMemberHandle(session: RequestSession):
         return
 
     if session.event.sub_type == 'add':
-        if session.event.comment.strip() == '':
+        if (session.event.comment or "").strip() == '':
             # 原napcat实现中没有user2_id！这里是修改了napcat的源码后实现的
             if isSysu and hasattr(session.event, 'user2_id') and session.event.user2_id != 0:
                 sign = f'这是一个未填写备注信息的邀请进群。请[CQ:at,qq={session.event.user2_id}] 说明入群者的身份。'
@@ -47,7 +51,7 @@ async def newMemberHandle(session: RequestSession):
             await sendLog(f'群聊{groupNum}触发空备注风控，已拒绝{adder_id}的申请')
             return
         for keyword in ('交流学习', '通过一下', '你好', '朋友推荐', ):
-            if keyword in session.event.comment:
+            if keyword in (session.event.comment or ""):
                 await bot.set_group_add_request(
                     flag=session.event.flag,
                     sub_type=session.event.sub_type,
@@ -61,7 +65,8 @@ async def newMemberHandle(session: RequestSession):
                 await sendLog(f'群聊{groupNum}触发关键词风控（{keyword}），已拒绝{adder_id}的申请')
                 return
         strangerInfo = await bot.get_stranger_info(user_id=adder_id)
-        if 0 < strangerInfo['qqLevel'] < 8:
+        qq_level = strangerInfo.get('level') or strangerInfo.get('qqLevel', 0)
+        if 0 < qq_level < 8:
             await bot.set_group_add_request(
                 flag=session.event.flag,
                 sub_type=session.event.sub_type,
@@ -72,8 +77,8 @@ async def newMemberHandle(session: RequestSession):
                 group_id=groupNum,
                 message='触发等级风控，已自动拒绝加群申请。如有需要，请联系该用户通过邀请方式进群。',
             )
-            await sendLog(f'群聊{groupNum}触发等级风控（{strangerInfo["level"]}），已拒绝{adder_id}的申请')
-        if strangerInfo['qqLevel'] == 0:
+            await sendLog(f'群聊{groupNum}触发等级风控（{qq_level}），已拒绝{adder_id}的申请')
+        if qq_level == 0:
             await bot.send_group_msg(
                 group_id=groupNum,
                 message='注意：该用户隐藏了QQ等级，请注意分辨。',
@@ -84,14 +89,15 @@ async def newMemberHandle(session: RequestSession):
 async def newFriendHandle(session: RequestSession):
     # 因不明原因一次好友申请会收到多条消息，加个防抖
     global friendHandleTimestamp
-    if session.event.time - friendHandleTimestamp < 2:
+    event_time = getattr(session.event, 'time', 0) or 0
+    if event_time - friendHandleTimestamp < 2:
         return
-    friendHandleTimestamp = session.event.time
+    friendHandleTimestamp = event_time
 
     adderId = session.event.user_id
     friendCode = getFriendAddCode(str(adderId))
     logInfo = f'收到一个来自{adderId}的好友申请，'
-    if friendCode == session.event.comment:
+    if friendCode == (session.event.comment or ""):
         await session.approve()
         await sendLog(logInfo + '已自动通过')
         await appendFriendList(str(adderId))
@@ -102,7 +108,7 @@ async def newFriendHandle(session: RequestSession):
 
 @on_command(name='friend_code', only_to_me=False)
 async def friendCodeOutput(session: CommandSession):
-    userId = session.event.user_id
+    userId = session.ctx['user_id']
     if not await isSuperAdmin(userId):
         return
     friendCode = getFriendAddCode(session.current_arg_text.strip())
@@ -115,8 +121,7 @@ def getFriendAddCode(friendId):
 
 
 @on_websocket_connect
-async def friendListInit(event: aiocqhttp.Event):
-    bot = nonebot.get_bot()
+async def friendListInit(bot):
     friendListInfo = await bot.get_friend_list()
     friendListQQ = [str(friend['user_id']) for friend in friendListInfo]
     await appendFriendList(friendListQQ)
