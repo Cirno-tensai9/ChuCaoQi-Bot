@@ -2,7 +2,7 @@ import nonebot
 import aiocqhttp
 from nonebot import on_websocket_connect
 from nonebot import on_request, RequestSession
-from nonebot import on_command, CommandSession
+from nb2_compat import on_command, CommandSession
 from kusa_base import config, sendLog, isSuperAdmin, appendFriendList
 
 friendHandleTimestamp = 0

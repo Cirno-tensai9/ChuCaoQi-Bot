@@ -2,7 +2,7 @@ import re
 import codecs
 import datetime
 from utils import convertNumStrToInt
-from nonebot import on_command, CommandSession, scheduler
+from nb2_compat import on_command, CommandSession
 from kusa_base import buying, selling, itemCharging, isUserExist, sendPrivateMsg
 from plugins.kusa_industrial import buyingKusaFactory, buyingAdvFactory, getNextFactoryCost
 import dbConnection.db as baseDB

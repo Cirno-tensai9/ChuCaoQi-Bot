@@ -1,6 +1,6 @@
 from kusa_base import isSuperAdmin, config
 from nonebot import on_natural_language, NLPSession
-from nonebot import on_command, CommandSession
+from nb2_compat import on_command, CommandSession
 
 banMode = 0
 messageHistory = ['', '', '', '']

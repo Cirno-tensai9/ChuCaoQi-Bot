@@ -10,7 +10,7 @@ import dbConnection.db as baseDB
 import dbConnection.kusa_item as itemDB
 import dbConnection.kusa_field as fieldDB
 from utils import convertNumStrToInt
-from nonebot import on_command, CommandSession
+from nb2_compat import on_command, CommandSession
 from nonebot import MessageSegment as ms
 from datetime import datetime
 from kusa_base import config, isUserExist, sendPrivateMsg, sendGroupMsg
@@ -460,7 +460,10 @@ async def vip_upgrade_2(session: CommandSession):
 
 
 # 生草日报运作
-@nonebot.scheduler.scheduled_job('cron', hour=4, misfire_grace_time=500)
+from nb2_compat import scheduled_job
+
+
+@scheduled_job('cron', hour=4, misfire_grace_time=500)
 async def dailyReportRunner():
     row = await fieldDB.kusaHistoryTotalReport(86400)
     maxTimes, maxKusa, maxAdvKusa, maxAvgAdvKusa, maxOnceAdvKusa = await fieldDB.kusaFarmChampion()
@@ -489,7 +492,7 @@ async def dailyReportRunner():
 
 
 # 生草周报运作
-@nonebot.scheduler.scheduled_job('cron', hour=4, minute=1, day_of_week='mon', misfire_grace_time=500)
+@scheduled_job('cron', hour=4, minute=1, day_of_week='mon', misfire_grace_time=500)
 async def weeklyReportRunner():
     row = await fieldDB.kusaHistoryTotalReport(604800)
     outputStr = f"最近一周生草统计:\n" \
@@ -500,7 +503,7 @@ async def weeklyReportRunner():
 
 
 # 每周草精总榜
-@nonebot.scheduler.scheduled_job('cron', hour=4, minute=2, day_of_week='mon', misfire_grace_time=500)
+@scheduled_job('cron', hour=4, minute=2, day_of_week='mon', misfire_grace_time=500)
 async def weeklyAdvReportRunner():
     outputStr = '总草精排行榜：' + await getKusaAdvRank()
     await nonebot.get_bot().send_group_msg(group_id=config['group']['main'], message=outputStr)

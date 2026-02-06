@@ -7,7 +7,7 @@ import random
 import utils
 from kusa_base import config, isSuperAdmin
 from datetime import datetime
-from nonebot import on_command, CommandSession
+from nb2_compat import on_command, CommandSession, scheduled_job
 from nonebot import MessageSegment as ms
 from urllib.request import urlretrieve
 
@@ -36,7 +36,7 @@ def getExamineFiles():
     return glob.glob(os.path.join(EXAMINE_PATH, '*.*'))
 
 
-@nonebot.scheduler.scheduled_job('cron', day='*', misfire_grace_time=500)
+@scheduled_job('cron', day='*', misfire_grace_time=500)
 async def dailyJunRunner():
     bot = nonebot.get_bot()
     now = datetime.now(pytz.timezone('Asia/Shanghai'))

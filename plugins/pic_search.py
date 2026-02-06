@@ -12,7 +12,7 @@ from PIL import Image, ImageFont, ImageDraw, ImageFilter
 from utils import imgLocalPathToBase64, extractImgUrls
 from kusa_base import config
 from decorator import on_reply_command
-from nonebot import on_command, CommandSession
+from nb2_compat import on_command, CommandSession
 from nonebot import on_natural_language, NLPSession
 
 proxy = config['web']['proxy']

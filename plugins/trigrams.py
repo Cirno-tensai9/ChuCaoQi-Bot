@@ -1,7 +1,7 @@
 import time
 import random
 from nonebot import scheduler
-from nonebot import on_command, CommandSession
+from nb2_compat import on_command, CommandSession
 from plugins.chatGPT_api import getChatReply
 
 gptUseRecord = {}

@@ -1,6 +1,6 @@
 import random
 import nonebot
-from nonebot import on_command, CommandSession
+from nb2_compat import on_command, CommandSession
 from kusa_base import config
 from utils import nameDetailSplit
 from itertools import groupby

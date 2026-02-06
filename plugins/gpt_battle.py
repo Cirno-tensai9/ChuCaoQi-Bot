@@ -1,7 +1,7 @@
 import re
 import random
 import asyncio
-from nonebot import on_command, CommandSession
+from nb2_compat import on_command, CommandSession
 from dbConnection.draw_item import getItemsWithStorage, isPoolNameExist
 from plugins.chatGPT_api import getChatReply
 

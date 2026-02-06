@@ -1,7 +1,7 @@
 import nonebot
 import dbConnection.db as baseDB
 import dbConnection.work_order as orderDB
-from nonebot import on_command, CommandSession
+from nb2_compat import on_command, CommandSession
 from kusa_base import isSuperAdmin, sendPrivateMsg
 from utils import nameDetailSplit
 

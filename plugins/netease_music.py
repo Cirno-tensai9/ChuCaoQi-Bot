@@ -1,7 +1,7 @@
 import json
 from urllib import request
 from urllib import parse
-from nonebot import on_command, CommandSession
+from nb2_compat import on_command, CommandSession
 from kusa_base import config
 
 

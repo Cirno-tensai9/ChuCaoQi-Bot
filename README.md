@@ -30,16 +30,17 @@
 ## 部署与运行
 
 除草器当前在以下项目的基础上构建：
-- [richardchien/nonebot](https://github.com/nonebot/nonebot)
+- [NoneBot2](https://github.com/nonebot/nonebot2)
+- [nonebot-adapter-onebot](https://github.com/nonebot/adapter-onebot)
 - [NapNeko/NapCatQQ](https://github.com/NapNeko/NapCatQQ)
 
 完成环境配置后，请按以下流程执行：
 
-1. 在`config.py`中调整或新增各项参数，用于调控Nonebot1的运行。[Nonebot1配置参数说明](https://v1.nonebot.dev/api/default_config.html)
-2. 在`/config/plugin_config.yaml`中调整各项参数，用于调控除草器插件的运行和进行权限管理。
-3. 在`/database`路径下创建一个名为`chuchu.sqlite`的sqlite3数据库文件，用于存储除草器的数据。
-4. 在根目录执行`pip install -r requirements.txt`导入依赖包。
-5. 使用`python bot.py`指令运行除草器，windows下可运行`startbot.bat`。
+1. 在根目录执行`pip install -r requirements.txt`导入依赖包。
+2. 在根目录创建并配置`.env`文件（本仓库已提供示例），设置`COMMAND_START`、`HOST`、`PORT`以及与NapCat/go-cqhttp连接相关的OneBot v11参数。
+3. 在`/config/plugin_config.yaml`中调整各项参数，用于调控除草器插件的运行和进行权限管理。
+4. 在`/database`路径下创建一个名为`chuchu.sqlite`的sqlite3数据库文件，用于存储除草器的数据。
+5. 使用`python bot.py`指令运行除草器（已切换到NoneBot2），Windows下可运行`startbot.bat`。
 6. 向数据库中导入`/config/initialize.sql`中的内容，用于初始化除草器的物品、商店和配置模块。
 
 ## 声明

@@ -9,7 +9,7 @@ from typing import Optional, Dict
 import nonebot
 import datetime
 from collections import Counter
-from nonebot import on_command, CommandSession
+from nb2_compat import on_command, CommandSession, scheduled_job
 from kusa_base import buying, selling, config, sendGroupMsg
 from utils import rd3, imgBytesToBase64
 import dbConnection.db as baseDB
@@ -402,7 +402,7 @@ def createGpicAll(gValuesColMap):
     return buf.getvalue()
 
 
-@nonebot.scheduler.scheduled_job('cron', minute='*/30', misfire_grace_time=None)
+@scheduled_job('cron', minute='*/30', misfire_grace_time=None)
 async def GChangeRunner():
     gValues = await gValueDB.getLatestGValues()
     newEastG = getNewG(gValues.eastValue, 0.1)
@@ -423,7 +423,7 @@ def getNewG(oldG: float, changeRange: float):
     return newG
 
 
-@nonebot.scheduler.scheduled_job('cron', hour='23', minute='45', misfire_grace_time=None)
+@scheduled_job('cron', hour='23', minute='45', misfire_grace_time=None)
 async def GResetRunner():
     if not resetDateCheck():
         return
@@ -453,7 +453,7 @@ async def GResetRunner():
     await bot.send_group_msg(group_id=config['group']['main'], message=f'新的G周期开始了！上个周期的G已经自动兑换为草。')
 
 
-@nonebot.scheduler.scheduled_job('cron', hour='23', minute='50', misfire_grace_time=None)
+@scheduled_job('cron', hour='23', minute='50', misfire_grace_time=None)
 async def GResetSummaryRunner():
     if not resetDateCheck():
         return

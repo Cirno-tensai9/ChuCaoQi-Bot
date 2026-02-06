@@ -4,7 +4,7 @@ import nonebot
 import dbConnection.db as baseDB
 import dbConnection.kusa_item as itemDB
 import dbConnection.kusa_field as fieldDB
-from nonebot import on_command, CommandSession
+from nb2_compat import on_command, CommandSession, scheduled_job
 from kusa_base import config, sendGroupMsg, sendLog
 
 
@@ -126,7 +126,7 @@ async def dailyStatistics(session: CommandSession):
 
 
 # 生草工业运作
-@nonebot.scheduler.scheduled_job('cron', hour=0, misfire_grace_time=None)
+@scheduled_job('cron', hour=0, misfire_grace_time=None)
 async def dailyIndustrialRunner():
     await dailyIndustrial()
 

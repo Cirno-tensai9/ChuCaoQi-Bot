@@ -2,7 +2,8 @@ import dbConnection.db as baseDB
 import dbConnection.kusa_item as itemDB
 import dbConnection.kusa_field as fieldDB
 from datetime import datetime
-from nonebot import on_command, CommandSession, get_bot
+from nonebot import get_bot
+from nb2_compat import on_command, CommandSession
 from kusa_base import isSuperAdmin, config
 from functools import wraps
 

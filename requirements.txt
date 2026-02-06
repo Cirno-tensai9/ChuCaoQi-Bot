@@ -4,6 +4,13 @@ httpx~=0.28.1
 matplotlib~=3.2.2
 nonebot~=1.9.1
 nonebot[scheduler]~=1.9.1
+<<<<<<< Updated upstream
+=======
+nonebot2~=2.0.0
+nonebot-adapter-onebot~=2.4.0
+nonebot-plugin-apscheduler~=0.3.0
+discord.py~=2.4.0
+>>>>>>> Stashed changes
 numpy~=1.26.1
 openai~=1.109.1
 PicImageSearch~=3.12.9

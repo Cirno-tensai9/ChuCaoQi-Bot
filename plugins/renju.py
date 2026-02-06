@@ -1,6 +1,6 @@
 import re
 from kusa_base import config
-from nonebot import on_command, CommandSession
+from nb2_compat import on_command, CommandSession
 from nonebot import on_natural_language, NLPSession
 
 game_state = 0

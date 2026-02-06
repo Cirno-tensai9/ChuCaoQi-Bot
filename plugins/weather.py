@@ -3,7 +3,7 @@ import pytz
 import requests
 from nonebot import MessageSegment as ms
 from kusa_base import config, sendGroupMsg
-from nonebot import on_command, CommandSession, on_startup, scheduler
+from nb2_compat import on_command, CommandSession
 from utils import imgUrlTobase64
 from datetime import datetime
 from bs4 import BeautifulSoup

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import random
 import typing
-from nonebot import on_command, CommandSession
+from nb2_compat import on_command, CommandSession
 
 
 class SaizeriyaMenuItem(typing.NamedTuple):

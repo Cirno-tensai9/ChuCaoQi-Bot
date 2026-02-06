@@ -3,7 +3,7 @@ import time
 import codecs
 import random
 import nonebot
-from nonebot import on_command, CommandSession
+from nb2_compat import on_command, CommandSession, scheduled_job
 from decorator import CQ_injection_check_command
 from functools import reduce
 
@@ -147,7 +147,7 @@ def luojunJudge(userId):
     return False
 
 
-@nonebot.scheduler.scheduled_job('interval', minutes=6, misfire_grace_time=300)
+@scheduled_job('interval', minutes=6, misfire_grace_time=300)
 async def luojunDecreaseRunner():
     global junWifeList
     newJunList = []

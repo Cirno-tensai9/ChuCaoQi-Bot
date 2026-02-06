@@ -6,7 +6,7 @@ import nonebot
 import asyncio
 from decorator import on_reply_command
 from nonebot import on_natural_language, NLPSession
-from nonebot import on_command, CommandSession, on_startup
+from nb2_compat import on_command, CommandSession, scheduled_job
 from kusa_base import config, sendLog, isSuperAdmin
 from plugins.chatGPT_api import getChatReply
 
@@ -240,7 +240,7 @@ async def record(session: NLPSession):
         print(f'已对消息{msgId}设置表情：👊')
 
 
-@nonebot.scheduler.scheduled_job('interval', minutes=2, misfire_grace_time=120)
+@scheduled_job('interval', minutes=2, misfire_grace_time=120)
 async def strangeWordSavingRunner():
     os.makedirs('database/strangeWord', exist_ok=True)
     for groupNum in sentenceListDict:
@@ -249,7 +249,7 @@ async def strangeWordSavingRunner():
                 file.write(sentence + '\n')
 
 
-@nonebot.scheduler.scheduled_job('interval', hours=3, misfire_grace_time=600)
+@scheduled_job('interval', hours=3, misfire_grace_time=600)
 async def setModelSentenceListRunner():
     await setModelSentenceList()
 

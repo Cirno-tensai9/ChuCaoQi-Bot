@@ -9,7 +9,7 @@ import nonebot
 import dbConnection.db as baseDB
 import dbConnection.kusa_field as fieldDB
 import dbConnection.kusa_item as itemDB
-from nonebot import on_command, CommandSession
+from nb2_compat import on_command, CommandSession
 from nonebot import MessageSegment as ms
 from datetime import datetime, timedelta, date, time
 from kusa_base import config, sendGroupMsg, sendPrivateMsg
@@ -385,7 +385,10 @@ async def _(session: CommandSession):
 
 
 # 生草结算
-@nonebot.scheduler.scheduled_job('interval', seconds=15, max_instances=10, misfire_grace_time=60)
+from nb2_compat import scheduled_job
+
+
+@scheduled_job('interval', seconds=15, max_instances=10, misfire_grace_time=60)
 async def kusaHarvestRunner():
     finishedFields = await fieldDB.getAllKusaField(onlyFinished=True)
     timeCapsuleUserIds = await itemDB.getUserIdListByItem('时光胶囊标记')
@@ -435,7 +438,7 @@ async def kusaHarvest(field):
     # await sendGroupMsg(config['group']['main'], timerStr)
 
 
-@nonebot.scheduler.scheduled_job('interval', minutes=90, misfire_grace_time=None)
+@scheduled_job('interval', minutes=90, misfire_grace_time=None)
 async def soilCapacityIncreaseBase():
     allFields = await fieldDB.getAllKusaField()
     badSoilFields = [field for field in allFields if field.soilCapacity < 25]
@@ -463,7 +466,7 @@ async def soilCapacityIncreaseBase():
             await itemDB.changeItemAmount(field.qq, '后备承载力单元', 1)
 
 
-@nonebot.scheduler.scheduled_job('cron', minute=33, second=33, misfire_grace_time=None)
+@scheduled_job('cron', minute=33, second=33, misfire_grace_time=None)
 async def soilCapacityIncreaseForInactive():
     badSoilFields = await fieldDB.getAllKusaField(onlySoilNotBest=True)
     for field in badSoilFields:

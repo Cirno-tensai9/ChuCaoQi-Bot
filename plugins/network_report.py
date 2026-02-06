@@ -3,7 +3,7 @@ import requests
 import typing
 from datetime import datetime
 from kusa_base import config
-from nonebot import on_command, CommandSession
+from nb2_compat import on_command, CommandSession, scheduled_job
 
 
 class SysuNetworkReport(typing.NamedTuple):
@@ -24,7 +24,7 @@ latestReport: SysuNetworkReport = None
 ENV_PROD = (config['env'] == 'prod')
 
 
-@nonebot.scheduler.scheduled_job('cron', hour='8-23', minute='0', second='5', misfire_grace_time=120)
+@scheduled_job('cron', hour='8-23', minute='0', second='5', misfire_grace_time=120)
 async def getNetworkReportRunner():
     if not ENV_PROD:
         return
@@ -59,7 +59,7 @@ async def _(session: CommandSession):
     await session.send(str(latestReport))
 
 
-@nonebot.scheduler.scheduled_job('cron', minute='0', hour='20', day='1-31/4', month='1,7', second='5', misfire_grace_time=120)
+@scheduled_job('cron', minute='0', hour='20', day='1-31/4', month='1,7', second='5', misfire_grace_time=120)
 async def vacationMentionRunner():
     if not ENV_PROD:
         return

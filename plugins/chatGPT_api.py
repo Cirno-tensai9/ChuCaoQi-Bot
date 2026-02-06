@@ -8,7 +8,7 @@ import asyncio
 
 import dbConnection.chat as db
 from kusa_base import isSuperAdmin, config, sendLog
-from nonebot import on_command, CommandSession, scheduler
+from nb2_compat import on_command, CommandSession
 from utils import nameDetailSplit, imgUrlTobase64
 from openai import OpenAI
 

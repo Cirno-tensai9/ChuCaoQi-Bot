@@ -1,4 +1,3 @@
-from nonebot import on_startup
 from tortoise import Tortoise
 from .models import User, KusaField, Flag, DonateRecord, TradeRecord
 from .kusa_item import changeItemAmount
@@ -181,8 +180,19 @@ class DB:
         await Tortoise.generate_schemas()
 
 
-@on_startup
-async def init():
-    async with DB() as db:
-        await db.init()
-        print("--- DB Init ---")
+# Register database initialization on NoneBot2 startup
+try:
+    from nonebot import get_driver
+
+    _driver = get_driver()
+
+    @_driver.on_startup
+    async def init():
+        async with DB() as db:
+            await db.init()
+            print("--- DB Init ---")
+
+except Exception:
+    # When imported outside of a running NoneBot2 context, silently skip
+    # driver registration to avoid import-time errors.
+    pass
